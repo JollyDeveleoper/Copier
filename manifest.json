@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Copier",
+  "version": "1.0",
+
+  "description": "This extension reduces and copied the longest link in one click!",
+  "author": "Jolly Joy | Maffinca69",
+  "permissions": [
+    "http://*/*",
+    "https://*/*",
+    "storage",
+    "tabs"
+  ],
+  "background": {
+    "scripts": ["src/background.js"],
+    "persistent": false
+  },
+  "options_page": "src/settings.html",
+  "browser_action": {
+
+  }
+}
