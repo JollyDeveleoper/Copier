@@ -7,4 +7,3 @@ Copier - this is chrome (maybe safari in future...) for reduced longest link usi
 * Select folder with unpacked extension
 ## Settings
 Go to settings extension and click by vk logo. You wil be redirected auth page. If after this you redirected to google.com - success!
-P.S. This is way is not secure. In future this the way will changed on login/password
