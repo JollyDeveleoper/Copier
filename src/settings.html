@@ -3,19 +3,34 @@
 <head>
     <meta charset="utf-8">
     <title>Copier settings</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-image: url("assets/background.jpg");
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%)
+        }
+
+        .login__logo {}
+    </style>
 </head>
 <body>
-
-<h1>
-    VK Access Token
-</h1>
-<strong>Нужен для работы приложения. Сокращенные ссылки будут сохранены в вашем профиле VK</strong><br>
-
-<label>
-    <input type="text" id="token">
-</label>
-<button id="save">Сохранить</button>
-
+<div class="container">
+    <div class="login__logo">
+        <a class="login__url">
+            <img src="assets/logo.png" alt="VK official logo" width="120">
+        </a>
+    </div>
+</div>
 <script src="settings.js"></script>
 </body>
 </html>

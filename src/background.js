@@ -15,7 +15,7 @@ const VK_API_VERSION = '5.103'
  */
 function copy(url) {
     // todo replace vk_token (not secure) on login/password. Only when will be open source
-    chrome.storage.local.get(['vk_token'], function(result) {
+    chrome.storage.local.get(['vk_token'], function (result) {
         let link = vkUrlBuilder('utils.getShortLink',
             {
                 'url': url,
@@ -78,5 +78,20 @@ chrome.browserAction.onClicked.addListener(() => {
         let url = tabs[0].url;
         copy(url)
     });
-
 });
+
+chrome.tabs.onUpdated.addListener(function tabUpdateListener(tabId, changeInfo) {
+    if (changeInfo.status === 'loading' && changeInfo.url !== undefined) {
+        if (!changeInfo.url.startsWith('https://oauth.vk.com/blank.html')) return;
+        let hash = changeInfo.url.split('#').pop();
+        let token = hash.substr(13).split('&')[0]
+        chrome.storage.local.set({'vk_token': token}, function() {
+            // redirect to google.com after saved token
+            chrome.tabs.getCurrent(function(tab) {
+                chrome.tabs.remove(tab.id, function() { });
+            });
+            chrome.tabs.update({url: "https://google.com"});
+
+        });
+    }
+})

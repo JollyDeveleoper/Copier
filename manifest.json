@@ -16,7 +16,5 @@
     "persistent": false
   },
   "options_page": "src/settings.html",
-  "browser_action": {
-
-  }
+  "browser_action": {}
 }

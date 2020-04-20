@@ -1,9 +1,19 @@
-// this is very easy settings.
-// todo rewrite on more beautifuler interface
-let submit = document.querySelector('#save')
-submit.addEventListener('click', () => {
-    let value = document.querySelector('#token').value
-    chrome.storage.local.set({'vk_token': value}, function() {
-        alert('Токен сохранен. Удачно серфинга :)')
-    });
-})
+const VK = {
+    APP_ID: 7422286,
+    SCOPE: 'offline,utils',
+    RESPONSE_TYPE: 'token',
+    DISPLAY: 'popup',
+    API_VERSION: 5.103
+}
+
+let loginUrl = document.querySelector('.login__url')
+loginUrl.setAttribute('href', buildAuthLink())
+
+/**
+ * Build auth link
+ * @returns {string}
+ */
+function buildAuthLink() {
+    return 'https://oauth.vk.com/authorize?client_id=' + VK.APP_ID + '&response_type=' + VK.RESPONSE_TYPE +
+        '&display=' + VK.DISPLAY + '&scope' + VK.SCOPE + '&v=' + VK.API_VERSION
+}
