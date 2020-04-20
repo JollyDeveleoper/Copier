@@ -14,7 +14,6 @@ const VK_API_VERSION = '5.103'
  * @param url - string
  */
 function copy(url) {
-    // todo replace vk_token (not secure) on login/password. Only when will be open source
     chrome.storage.local.get(['vk_token'], function (result) {
         let link = vkUrlBuilder('utils.getShortLink',
             {
@@ -25,7 +24,6 @@ function copy(url) {
             });
         request(link)
     });
-
 }
 
 /**
@@ -65,9 +63,25 @@ async function request(url) {
 
     if (response.ok) {
         let json = await response.json();
-        // todo replace system alert on custom css alert (maybe material...)
-        alert(json.response.short_url)
+        copyToClipboard(json.response.short_url)
+        chrome.tabs.executeScript({
+            file: 'src/snackbar.js'
+        });
     }
+}
+
+/**
+ * Copy text to clipboard
+ * navigator api is not working in chrome extension, i'm don't understand why
+ * @param text
+ */
+function copyToClipboard(text) {
+    const fuckingClipboardAPI = document.createElement('textarea');
+    fuckingClipboardAPI.value = text;
+    document.body.appendChild(fuckingClipboardAPI);
+    fuckingClipboardAPI.select();
+    document.execCommand('copy');
+    document.body.removeChild(fuckingClipboardAPI);
 }
 
 /**
@@ -80,15 +94,19 @@ chrome.browserAction.onClicked.addListener(() => {
     });
 });
 
-chrome.tabs.onUpdated.addListener(function tabUpdateListener(tabId, changeInfo) {
+/**
+ * Listen auth user
+ */
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
     if (changeInfo.status === 'loading' && changeInfo.url !== undefined) {
         if (!changeInfo.url.startsWith('https://oauth.vk.com/blank.html')) return;
         let hash = changeInfo.url.split('#').pop();
         let token = hash.substr(13).split('&')[0]
-        chrome.storage.local.set({'vk_token': token}, function() {
+        chrome.storage.local.set({'vk_token': token}, function () {
             // redirect to google.com after saved token
-            chrome.tabs.getCurrent(function(tab) {
-                chrome.tabs.remove(tab.id, function() { });
+            chrome.tabs.getCurrent(function (tab) {
+                chrome.tabs.remove(tab.id, function () {
+                });
             });
             chrome.tabs.update({url: "https://google.com"});
 
